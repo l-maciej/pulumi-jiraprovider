@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/maciej-l/pulumi-jiraprovider/sdk/go/jiraprovider"
+	"github.com/l-maciej/pulumi-jiraprovider/sdk/go/jiraprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

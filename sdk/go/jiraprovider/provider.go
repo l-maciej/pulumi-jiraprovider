@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	"errors"
-	"github.com/maciej-l/pulumi-jiraprovider/sdk/go/jiraprovider/internal"
+	"github.com/l-maciej/pulumi-jiraprovider/sdk/go/jiraprovider/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

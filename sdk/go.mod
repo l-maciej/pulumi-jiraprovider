@@ -1,4 +1,4 @@
-module  github.com/maciej-l/pulumi-jiraprovider/sdk
+module  github.com/l-maciej/pulumi-jiraprovider/sdk
 
 go 1.21
 
