@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['ProviderArgs', 'Provider']
@@ -14,21 +19,31 @@ __all__ = ['ProviderArgs', 'Provider']
 @pulumi.input_type
 class ProviderArgs:
     def __init__(__self__, *,
-                 itsasecret: Optional[pulumi.Input[bool]] = None):
+                 j_url: pulumi.Input[str],
+                 token: pulumi.Input[str]):
         """
         The set of arguments for constructing a Provider resource.
         """
-        if itsasecret is not None:
-            pulumi.set(__self__, "itsasecret", itsasecret)
+        pulumi.set(__self__, "j_url", j_url)
+        pulumi.set(__self__, "token", token)
+
+    @property
+    @pulumi.getter(name="jURL")
+    def j_url(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "j_url")
+
+    @j_url.setter
+    def j_url(self, value: pulumi.Input[str]):
+        pulumi.set(self, "j_url", value)
 
     @property
     @pulumi.getter
-    def itsasecret(self) -> Optional[pulumi.Input[bool]]:
-        return pulumi.get(self, "itsasecret")
+    def token(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "token")
 
-    @itsasecret.setter
-    def itsasecret(self, value: Optional[pulumi.Input[bool]]):
-        pulumi.set(self, "itsasecret", value)
+    @token.setter
+    def token(self, value: pulumi.Input[str]):
+        pulumi.set(self, "token", value)
 
 
 class Provider(pulumi.ProviderResource):
@@ -36,10 +51,11 @@ class Provider(pulumi.ProviderResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 itsasecret: Optional[pulumi.Input[bool]] = None,
+                 j_url: Optional[pulumi.Input[str]] = None,
+                 token: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Xyz resource with the given unique name, props, and options.
+        Create a Jiraprovider resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         """
@@ -47,10 +63,10 @@ class Provider(pulumi.ProviderResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: Optional[ProviderArgs] = None,
+                 args: ProviderArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Xyz resource with the given unique name, props, and options.
+        Create a Jiraprovider resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param ProviderArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -66,7 +82,8 @@ class Provider(pulumi.ProviderResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 itsasecret: Optional[pulumi.Input[bool]] = None,
+                 j_url: Optional[pulumi.Input[str]] = None,
+                 token: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -76,10 +93,25 @@ class Provider(pulumi.ProviderResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ProviderArgs.__new__(ProviderArgs)
 
-            __props__.__dict__["itsasecret"] = pulumi.Output.from_input(itsasecret).apply(pulumi.runtime.to_json) if itsasecret is not None else None
+            if j_url is None and not opts.urn:
+                raise TypeError("Missing required property 'j_url'")
+            __props__.__dict__["j_url"] = j_url
+            if token is None and not opts.urn:
+                raise TypeError("Missing required property 'token'")
+            __props__.__dict__["token"] = token
         super(Provider, __self__).__init__(
-            'xyz',
+            'jiraprovider',
             resource_name,
             __props__,
             opts)
+
+    @property
+    @pulumi.getter(name="jURL")
+    def j_url(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "j_url")
+
+    @property
+    @pulumi.getter
+    def token(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "token")
 

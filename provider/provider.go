@@ -23,17 +23,14 @@ import (
 // Version is initialized by the Go linker to contain the semver of this build.
 var Version string
 
-const Name string = "xyz"
+const Name string = "jiraprovider"
 
 func Provider() p.Provider {
 	// We tell the provider what resources it needs to support.
 	// In this case, a single resource and component
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
-			infer.Resource[Random, RandomArgs, RandomState](),
-		},
-		Components: []infer.InferredComponent{
-			infer.Component[*RandomComponent, RandomComponentArgs, *RandomComponentState](),
+			infer.Resource[JiraGroup, JiraGroupArgs, JiraGroupState](),
 		},
 		Config: infer.Config[Config](),
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
@@ -44,5 +41,6 @@ func Provider() p.Provider {
 
 // Define some provider-level configuration
 type Config struct {
-	Scream *bool `pulumi:"itsasecret,optional"`
+	JURL  string `pulumi:"jURL"`
+	Token string `pulumi:"token"`
 }

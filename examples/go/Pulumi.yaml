@@ -1,6 +1,6 @@
-name: provider-xyz
+name: provider-jiraprovider
 runtime: go
 plugins:
   providers:
-    - name: xyz
+    - name: jiraprovider
       path: ../../bin

@@ -4,13 +4,16 @@
 package config
 
 import (
-	"example.com/pulumi-xyz/sdk/go/xyz/internal"
+	"example.com/pulumi-jiraprovider/sdk/go/jiraprovider/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
 
 var _ = internal.GetEnvOrDefault
 
-func GetItsasecret(ctx *pulumi.Context) bool {
-	return config.GetBool(ctx, "xyz:itsasecret")
+func GetJURL(ctx *pulumi.Context) string {
+	return config.Get(ctx, "jiraprovider:jURL")
+}
+func GetToken(ctx *pulumi.Context) string {
+	return config.Get(ctx, "jiraprovider:token")
 }

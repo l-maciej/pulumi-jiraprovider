@@ -5,12 +5,20 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
 declare var exports: any;
-const __config = new pulumi.Config("xyz");
+const __config = new pulumi.Config("jiraprovider");
 
-export declare const itsasecret: boolean | undefined;
-Object.defineProperty(exports, "itsasecret", {
+export declare const jURL: string | undefined;
+Object.defineProperty(exports, "jURL", {
     get() {
-        return __config.getObject<boolean>("itsasecret");
+        return __config.get("jURL");
+    },
+    enumerable: true,
+});
+
+export declare const token: string | undefined;
+Object.defineProperty(exports, "token", {
+    get() {
+        return __config.get("token");
     },
     enumerable: true,
 });

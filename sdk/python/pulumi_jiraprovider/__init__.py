@@ -5,27 +5,25 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from .jira_group import *
 from .provider import *
-from .random import *
-from .random_component import *
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
-    import pulumi_xyz.config as __config
+    import pulumi_jiraprovider.config as __config
     config = __config
 else:
-    config = _utilities.lazy_import('pulumi_xyz.config')
+    config = _utilities.lazy_import('pulumi_jiraprovider.config')
 
 _utilities.register(
     resource_modules="""
 [
  {
-  "pkg": "xyz",
+  "pkg": "jiraprovider",
   "mod": "index",
-  "fqn": "pulumi_xyz",
+  "fqn": "pulumi_jiraprovider",
   "classes": {
-   "xyz:index:Random": "Random",
-   "xyz:index:RandomComponent": "RandomComponent"
+   "jiraprovider:index:JiraGroup": "JiraGroup"
   }
  }
 ]
@@ -33,9 +31,9 @@ _utilities.register(
     resource_packages="""
 [
  {
-  "pkg": "xyz",
-  "token": "pulumi:providers:xyz",
-  "fqn": "pulumi_xyz",
+  "pkg": "jiraprovider",
+  "token": "pulumi:providers:jiraprovider",
+  "fqn": "pulumi_jiraprovider",
   "class": "Provider"
  }
 ]

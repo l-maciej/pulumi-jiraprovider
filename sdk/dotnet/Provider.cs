@@ -7,11 +7,18 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Xyz
+namespace Pulumi.Jiraprovider
 {
-    [XyzResourceType("pulumi:providers:xyz")]
+    [JiraproviderResourceType("pulumi:providers:jiraprovider")]
     public partial class Provider : global::Pulumi.ProviderResource
     {
+        [Output("jURL")]
+        public Output<string> JURL { get; private set; } = null!;
+
+        [Output("token")]
+        public Output<string> Token { get; private set; } = null!;
+
+
         /// <summary>
         /// Create a Provider resource with the given unique name, arguments, and options.
         /// </summary>
@@ -19,8 +26,8 @@ namespace Pulumi.Xyz
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
-            : base("xyz", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
+        public Provider(string name, ProviderArgs args, CustomResourceOptions? options = null)
+            : base("jiraprovider", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
 
@@ -39,8 +46,11 @@ namespace Pulumi.Xyz
 
     public sealed class ProviderArgs : global::Pulumi.ResourceArgs
     {
-        [Input("itsasecret", json: true)]
-        public Input<bool>? Itsasecret { get; set; }
+        [Input("jURL", required: true)]
+        public Input<string> JURL { get; set; } = null!;
+
+        [Input("token", required: true)]
+        public Input<string> Token { get; set; } = null!;
 
         public ProviderArgs()
         {

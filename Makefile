@@ -1,10 +1,10 @@
-PROJECT_NAME := Pulumi Xyz Resource Provider
+PROJECT_NAME := Pulumi jiraprovider Resource Provider
 
-PACK             := xyz
+PACK             := jiraprovider
 PACKDIR          := sdk
-PROJECT          := github.com/pulumi/pulumi-xyz
-NODE_MODULE_NAME := @abc/xyz
-NUGET_PKG_NAME   := Abc.Xyz
+PROJECT          := github.com/l-maciej/pulumi-jiraprovider
+NODE_MODULE_NAME := @l-maciej/jiraprovider
+NUGET_PKG_NAME   := l-maciej.jiraprovider
 
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         ?= $(shell pulumictl get version)

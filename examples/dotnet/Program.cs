@@ -1,13 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Pulumi;
-using Xyz = Pulumi.Xyz;
+using Jiraprovider = Pulumi.Jiraprovider;
 
 return await Deployment.RunAsync(() => 
 {
-    var myRandomResource = new Xyz.Random("myRandomResource", new()
+    var myRandomResource = new Jiraprovider.Random("myRandomResource", new()
     {
-        Length = 24,
+        Length = 11,
+    });
+
+    var myRandomComponent = new Jiraprovider.RandomComponent("myRandomComponent", new()
+    {
+        Length = 14,
     });
 
     return new Dictionary<string, object?>

@@ -1,18 +1,18 @@
 {
-    "name": "@pulumi/xyz",
+    "name": "@pulumi/jiraprovider",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/pulumi": "^3.42.0"
+        "@pulumi/pulumi": "^3.142.0"
     },
     "devDependencies": {
-        "@types/node": "^14",
+        "@types/node": "^18",
         "typescript": "^4.3.5"
     },
     "pulumi": {
         "resource": true,
-        "name": "xyz"
+        "name": "jiraprovider"
     }
 }

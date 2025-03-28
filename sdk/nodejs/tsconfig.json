@@ -16,9 +16,8 @@
         "config/index.ts",
         "config/vars.ts",
         "index.ts",
+        "jiraGroup.ts",
         "provider.ts",
-        "random.ts",
-        "randomComponent.ts",
         "utilities.ts"
     ]
 }
