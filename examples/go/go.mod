@@ -5,6 +5,7 @@ go 1.22
 toolchain go1.22.2
 
 require github.com/pulumi/pulumi/sdk/v3 v3.159.0
+require github.com/l-maciej/pulumi-jiraprovider v0.0.0-20250328102508-04a728cee39
 
 require (
 	dario.cat/mergo v1.0.0 // indirect

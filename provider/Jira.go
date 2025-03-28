@@ -84,16 +84,13 @@ func (JiraGroup) Create(ctx context.Context, name string, input JiraGroupArgs, p
 	return name, state, nil
 }
 
-func (JiraGroup) Delete(ctx context.Context, name string, input JiraGroupArgs, preview bool) (string, JiraGroupState, error) {
-	state := JiraGroupState{JiraGroupArgs: input}
-	if preview {
-		return name, state, nil
-	}
+func (JiraGroup) Delete(ctx context.Context, id string, state JiraGroupState) error {
+
 	cfg := infer.GetConfig[Config](ctx)
 	jurl := cfg.JURL
 	token := cfg.Token
 	bearer := "Bearer " + token
-	endpoint := "/rest/api/2/group?groupname=" + url.QueryEscape(input.JiraGroupName)
+	endpoint := "/rest/api/2/group?groupname=" + url.QueryEscape(state.JiraGroupName)
 	req, _ := http.NewRequest(
 		"DELETE",
 		jurl+endpoint,
@@ -108,5 +105,5 @@ func (JiraGroup) Delete(ctx context.Context, name string, input JiraGroupArgs, p
 	}
 	defer res.Body.Close()
 	log.Printf("POST status: %d\n", res.StatusCode)
-	return name, state, nil
+	return err
 }

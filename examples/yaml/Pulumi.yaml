@@ -9,4 +9,4 @@ resources:
   pulumites2t: #diffenet thing that grpname below
     type: jiraprovider:JiraGroup
     properties:
-      JiraGroupName: "pulumitest"
+      JiraGroupName: "1pulumitest"
