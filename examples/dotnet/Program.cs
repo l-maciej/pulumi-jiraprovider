@@ -5,22 +5,10 @@ using Jiraprovider = Pulumi.Jiraprovider;
 
 return await Deployment.RunAsync(() => 
 {
-    var myRandomResource = new Jiraprovider.Random("myRandomResource", new()
+    var pulumites2T = new Jiraprovider.JiraGroup("pulumites2t", new()
     {
-        Length = 11,
+        JiraGroupName = "pulumitest",
     });
 
-    var myRandomComponent = new Jiraprovider.RandomComponent("myRandomComponent", new()
-    {
-        Length = 14,
-    });
-
-    return new Dictionary<string, object?>
-    {
-        ["output"] = 
-        {
-            { "value", myRandomResource.Result },
-        },
-    };
 });
 

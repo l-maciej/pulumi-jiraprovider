@@ -6,16 +6,7 @@ plugins:
       path: ../../bin
 
 resources:
-  pulumitest:
+  pulumites2t: #diffenet thing that grpname below
     type: jiraprovider:JiraGroup
     properties:
       JiraGroupName: "pulumitest"
-
-  pulumitest2:
-    type: jiraprovider:JiraGroup
-    properties:
-      JiraGroupName: "pulumitest2"
-
-outputs:
-  output:
-    value: ${pulumitest.result}

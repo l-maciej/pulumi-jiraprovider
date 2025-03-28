@@ -59,10 +59,11 @@ func (JiraGroup) Create(ctx context.Context, name string, input JiraGroupArgs, p
 	cfg := infer.GetConfig[Config](ctx)
 	jurl := cfg.JURL
 	token := cfg.Token
+
 	type group struct {
 		Name string `json:"name"`
 	}
-	data_out, _ := json.Marshal(group{Name: name})
+	data_out, _ := json.Marshal(group{Name: input.JiraGroupName})
 	bearer := "Bearer " + token
 	endpoint := "/rest/api/2/group"
 	req, _ := http.NewRequest(
@@ -92,7 +93,7 @@ func (JiraGroup) Delete(ctx context.Context, name string, input JiraGroupArgs, p
 	jurl := cfg.JURL
 	token := cfg.Token
 	bearer := "Bearer " + token
-	endpoint := "/rest/api/2/group?groupname=" + url.QueryEscape(name)
+	endpoint := "/rest/api/2/group?groupname=" + url.QueryEscape(input.JiraGroupName)
 	req, _ := http.NewRequest(
 		"DELETE",
 		jurl+endpoint,
