@@ -31,8 +31,9 @@ func Provider() p.Provider {
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
 			infer.Resource[JiraGroup, JiraGroupArgs, JiraGroupState](),
+			//infer.Resource[jiraProject, jiraProjectArgs, jiraProjectState](),
 		},
-		Config: infer.Config[Config](),
+		Config: infer.Config[config](),
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
 		},
@@ -40,7 +41,13 @@ func Provider() p.Provider {
 }
 
 // Define some provider-level configuration
-type Config struct {
+type config struct {
 	JURL  string `pulumi:"jURL"`
 	Token string `pulumi:"token"`
-}
+	//jiraProjecDefultAssigneeType        string `pulumi:"defaultJiraProjectAssType"`
+	jiraProjecDefultAvatarId int64 `pulumi:"defaultJiraProjectAvatrID"`
+	//jiraProjecDefultCategoryId          int64  `pulumi:"defaultJiraProjectCategoryID"`
+	//jiraProjecDefultIssueSecurityScheme int64  `pulumi:"defaultJiraProjectIssScheme"`
+	//jiraProjecDefultNotificationScheme  int64  `pulumi:"defaultJiraProjectNotScheme"`
+	//jiraProjecDefultPermissionScheme    int64  `pulumi:"defaultJiraProjectPermScheme"`
+} //

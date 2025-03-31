@@ -6,7 +6,7 @@ plugins:
       path: ../../bin
 
 resources:
-  pulumites2t: #diffenet thing that grpname below
+  pulumites2t: #Logcial name
     type: jiraprovider:JiraGroup
     properties:
-      JiraGroupName: "1pulumitest"
+      JiraGroupName: "pulumitest"
