@@ -15,13 +15,9 @@
 package provider
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
-	"log"
-	"net/http"
 	"net/url"
-	"strings"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
@@ -51,59 +47,24 @@ type JiraGroupState struct {
 	Result string `pulumi:"result"`
 }
 
+type group_request_struct struct { //Format for Jira
+	Name string `json:"name"`
+}
+
 func (JiraGroup) Create(ctx context.Context, name string, input JiraGroupArgs, preview bool) (string, JiraGroupState, error) {
 	state := JiraGroupState{JiraGroupArgs: input}
 	if preview {
 		return name, state, nil
 	}
 	cfg := infer.GetConfig[Config](ctx)
-	jurl := cfg.JURL
-	token := cfg.Token
-
-	type group struct {
-		Name string `json:"name"`
-	}
-	data_out, _ := json.Marshal(group{Name: input.JiraGroupName})
-	bearer := "Bearer " + token
-	endpoint := "/rest/api/2/group"
-	req, _ := http.NewRequest(
-		"POST",
-		jurl+endpoint,
-		bytes.NewBuffer(data_out),
-	)
-	req.Header.Add("Authorization", bearer)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "application/json")
-	res, err := http.DefaultClient.Do(req) // send an HTTP using `req` object
-	if err != nil {                        // check for response error
-		log.Fatal("Error:O", err)
-	}
-	defer res.Body.Close()
-	log.Printf("POST status: %d\n", res.StatusCode)
-	//state.Result = res.StatusCode
+	dataOut, _ := json.Marshal(group_request_struct{Name: input.JiraGroupName}) //Defined per requset since they have diffrenet structure
+	postHandler(dataOut, cfg.Token, cfg.JURL, "/rest/api/2/group")
 	return name, state, nil
 }
 
 func (JiraGroup) Delete(ctx context.Context, id string, state JiraGroupState) error {
-
 	cfg := infer.GetConfig[Config](ctx)
-	jurl := cfg.JURL
-	token := cfg.Token
-	bearer := "Bearer " + token
 	endpoint := "/rest/api/2/group?groupname=" + url.QueryEscape(state.JiraGroupName)
-	req, _ := http.NewRequest(
-		"DELETE",
-		jurl+endpoint,
-		strings.NewReader(""),
-	)
-	req.Header.Add("Authorization", bearer)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "application/json")
-	res, err := http.DefaultClient.Do(req) // send an HTTP using `req` object
-	if err != nil {                        // check for response error
-		log.Fatal("Error:O", err)
-	}
-	defer res.Body.Close()
-	log.Printf("POST status: %d\n", res.StatusCode)
-	return err
+	status := deleteHandler(cfg.Token, cfg.JURL, endpoint)
+	return status
 }
