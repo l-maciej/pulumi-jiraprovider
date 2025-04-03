@@ -43,8 +43,7 @@ type JiraGroupArgs struct {
 
 type JiraGroupState struct {
 	JiraGroupArgs
-	//Slug   string
-	Result string `pulumi:"result"`
+	ReturnCode int `pulumi:"ReturnCode"`
 }
 
 type group_request_struct struct { //Format for Jira
@@ -52,13 +51,14 @@ type group_request_struct struct { //Format for Jira
 }
 
 func (JiraGroup) Create(ctx context.Context, name string, input JiraGroupArgs, preview bool) (string, JiraGroupState, error) {
-	state := JiraGroupState{JiraGroupArgs: input}
+	state := JiraGroupState{JiraGroupArgs: input, ReturnCode: 420}
 	if preview {
 		return name, state, nil
 	}
 	cfg := infer.GetConfig[Config](ctx)
 	dataOut, _ := json.Marshal(group_request_struct{Name: input.JiraGroupName}) //Defined per requset since they have diffrenet structure
-	postHandler(dataOut, cfg.Token, cfg.JURL, "/rest/api/2/group")
+	outStatus := postHandler(dataOut, cfg.Token, cfg.JURL, "/rest/api/2/group")
+	state.stateUpdater(outStatus)
 	return name, state, nil
 }
 

@@ -45,3 +45,7 @@ func deleteHandler(auth string, instance string, endpoint string) error {
 	log.Printf("POST status: %d\n", res.StatusCode)
 	return err
 }
+
+func (jgs *JiraGroupState) stateUpdater(val int) {
+	jgs.ReturnCode = val
+}
