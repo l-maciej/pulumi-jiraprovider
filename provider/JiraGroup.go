@@ -18,6 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/url"
+	"strings"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
@@ -36,9 +37,9 @@ type JiraGroup struct{}
 
 type JiraGroupArgs struct {
 	//CreatedBy string `pulumi:"createdBy"`
-	JiraGroupName string `pulumi:"JiraGroupName"`
-	//GroupPermission   string   `pulumi:"groupPermission"`
-	//AssignedToProject []string `pulumi:"assignedProjectKey"`
+	JiraGroupName     string `pulumi:"JiraGroupName"`
+	AssignedToProject string `pulumi:"assignedProjectKey,optional"`
+	GroupPermission   string `pulumi:"groupPermission,optional"` //optional assign to project
 }
 
 type JiraGroupState struct {
@@ -50,6 +51,10 @@ type group_request_struct struct { //Format for Jira
 	Name string `json:"name"`
 }
 
+type group_assigment_struct struct {
+	Group []string `json:"group"`
+}
+
 func (JiraGroup) Create(ctx context.Context, name string, input JiraGroupArgs, preview bool) (string, JiraGroupState, error) {
 	state := JiraGroupState{JiraGroupArgs: input, ReturnCode: 420}
 	if preview {
@@ -58,7 +63,25 @@ func (JiraGroup) Create(ctx context.Context, name string, input JiraGroupArgs, p
 	cfg := infer.GetConfig[Config](ctx)
 	dataOut, _ := json.Marshal(group_request_struct{Name: input.JiraGroupName}) //Defined per requset since they have diffrenet structure
 	outStatus := postHandler(dataOut, cfg.Token, cfg.JURL, "/rest/api/2/group")
-	state.stateUpdater(outStatus)
+	state.appendGroupstate(outStatus)
+
+	if input.AssignedToProject != "" {
+		role_name := strings.ToLower(input.GroupPermission)
+		var role_id string
+		switch {
+		case role_name == "admin":
+			role_id = "10002"
+		case role_name == "developer":
+			role_id = "10001"
+		case role_name == "user":
+			role_id = "10000"
+		default:
+			role_id = "10000"
+		}
+		endpoint := "/rest/api/2/project/" + input.AssignedToProject + "/role/" + role_id
+		dataOut, _ := json.Marshal(group_assigment_struct{Group: []string{input.JiraGroupName}})
+		postHandler(dataOut, cfg.Token, cfg.JURL, endpoint)
+	}
 	return name, state, nil
 }
 

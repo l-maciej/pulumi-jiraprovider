@@ -46,6 +46,10 @@ func deleteHandler(auth string, instance string, endpoint string) error {
 	return err
 }
 
-func (jgs *JiraGroupState) stateUpdater(val int) {
+func (jgs *JiraGroupState) appendGroupstate(val int) {
 	jgs.ReturnCode = val
+}
+
+func (jps *JiraProjectState) appendProjectstate(val int) {
+	jps.ReturnCode = val
 }

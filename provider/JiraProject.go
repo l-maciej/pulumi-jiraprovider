@@ -48,7 +48,7 @@ type project_request_struct struct {
 // https://github.com/pulumi/pulumi-go-provider/blob/a019455cf196d45f706cace3d9742ece9b90c33a/examples/dna-store/main.go#L189
 
 func (JiraProject) Create(ctx context.Context, name string, input JiraProjectArgs, preview bool) (string, JiraProjectState, error) {
-	state := JiraProjectState{JiraProjectArgs: input}
+	state := JiraProjectState{JiraProjectArgs: input, ReturnCode: 420}
 	if preview {
 		return name, state, nil
 	}
@@ -66,7 +66,8 @@ func (JiraProject) Create(ctx context.Context, name string, input JiraProjectArg
 		//NotificationScheme:  input.JiraProjectNotScheme,
 		//PermissionScheme:    input.JiraProjectPermScheme,
 	})
-	postHandler(dataOut, cfg.Token, cfg.JURL, "/rest/api/2/project")
+	outStatus := postHandler(dataOut, cfg.Token, cfg.JURL, "/rest/api/2/project")
+	state.appendProjectstate(outStatus)
 	return name, state, nil
 }
 
@@ -76,8 +77,3 @@ func (JiraProject) Delete(ctx context.Context, id string, state JiraProjectState
 	status := deleteHandler(cfg.Token, cfg.JURL, endpoint)
 	return status
 }
-
-//func (jp *JiraProjectArgs) Annotate(ctx context.Context, a infer.Annotator) {
-//	cfg := infer.GetConfig[Config](ctx)
-//	a.SetDefault(&jp.JiraProjectAvatrID, cfg.jiraProjecDefultAvatarId)
-//}
